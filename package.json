@@ -1,0 +1,31 @@
+{
+  "name": "render-jpcv",
+  "version": "1.0.0",
+  "description": "RenderJPCV - YAML to JIS-compliant resume generator (CLI)",
+  "bin": {
+    "render-jpcv": "./bin/cli.js"
+  },
+  "files": ["bin", "lib", "assets", "README.md"],
+  "main": "lib/cli.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "prepare": "npm run build",
+    "start": "node ./lib/cli.js"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "fs-extra": "^11.0.0",
+    "js-yaml": "^4.1.0",
+    "@myriaddreamin/typst-ts-node-compiler": "^0.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "18.x",
+    "@types/fs-extra": "^11.0.1",
+    "@types/js-yaml": "^4.0.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

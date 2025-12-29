@@ -1,0 +1,85 @@
+# ==========================================
+# RenderJPCV Resume Data (Sample)
+# ==========================================
+
+config:
+  font_size: 11pt
+  # 年の表示スタイル（YAMLは西暦で記述し、表示だけ切り替え）
+  # - seireki: 2025年
+  # - wareki: 令和7年 / 平成31年（境界は月単位で判定）
+  year_style: seireki
+  # 履歴書右上の「現在」日付・アーカイブファイル名に使用（YYYY-MM-DD）
+  render_date: 2025-12-29
+
+profile:
+  name: 山田 太郎
+  name_kana: ヤマダ タロウ
+  face_image_path: ""
+  birthday: 1990-01-01
+  age: 34
+  gender: 男
+
+  address_zip: 100-0001
+  address: 東京都千代田区千代田1-1
+  address_kana: トウキョウト チヨダク チヨダ
+  phone: 090-1234-5678
+  email: taro.yamada@example.com
+
+  contact_zip: 150-0001
+  contact_address: 東京都渋谷区神宮前1-1-1
+  contact_address_kana: トウキョウト シブヤク ジングウマエ
+  contact_phone: 03-1234-5678
+  contact_email: taro.yamada+contact@example.com
+
+education:
+  - date: 2006-04
+    event: 東京都立〇〇高等学校 入学
+  - date: 2009-03
+    event: 東京都立〇〇高等学校 卒業
+  - date: 2009-04
+    event: 〇〇大学 理工学部 入学
+  - date: 2013-03
+    event: 〇〇大学 理工学部 卒業
+  - date: 2013-04
+    event: 〇〇大学大学院 〇〇研究科 入学
+  - date: 2015-03
+    event: 〇〇大学大学院 〇〇研究科 修了
+
+work:
+  - date: 2013-04
+    event: 株式会社〇〇 入社
+  - date: 2016-04
+    event: 株式会社〇〇 開発部 異動
+    description: Webアプリ基盤の整備
+  - date: 2020-03
+    event: 株式会社〇〇 退社
+    description: 一身上の都合により
+  - date: 2020-04
+    event: 株式会社△△ 入社
+    description: 現在に至る
+  - date: 2023-04
+    event: 株式会社△△ リードエンジニア
+    description: チームの開発生産性向上
+
+qualifications:
+  - date: 2012-11
+    name: 普通自動車第一種運転免許 取得
+  - date: 2018-05
+    name: TOEIC L&R 800点 取得
+  - date: 2021-12
+    name: 応用情報技術者試験 合格
+  - date: 2024-06
+    name: AWS Certified Solutions Architect – Associate 合格
+
+other:
+  motivation: |
+    貴社の技術力と理念に深く共感し、PythonおよびTypeScriptの経験を活かして
+    プロダクト開発に貢献したいと考え、志望いたしました。
+    これまで、要件定義から設計・実装・運用まで一貫して携わり、品質と速度の両立を意識して改善を続けてきました。
+
+  hopes: |
+    勤務地: 東京都内希望
+    給与: 貴社規定に従います
+    職種: ソフトウェアエンジニア（バックエンド/フルスタック）
+    勤務時間: フレックスタイム希望（コアタイムに合わせます）
+    その他: リモートワークは週2〜3日程度を希望（応相談）

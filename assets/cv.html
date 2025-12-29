@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>履歴書</title>
+    <style>
+        /* =========================================
+           設定用変数
+           ========================================= */
+        :root {
+            --history-row-height: 34px;
+            --photo-width: 40mm;
+            --border-width: 1.5px;
+            /* 線の太さを1.5pxに変更 */
+        }
+
+        /* =========================================
+           基本設定
+           ========================================= */
+        body {
+            font-family: "MS Mincho", "Hiragino Mincho ProN", serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            line-height: 1.3;
+            font-size: 11pt;
+            -webkit-print-color-adjust: exact;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            padding: 15mm 15mm;
+            margin: 0 auto 20px auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: 297mm;
+                page-break-after: always;
+                border: none;
+            }
+        }
+
+        /* =========================================
+           テーブル共通設定
+           ========================================= */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            table-layout: fixed;
+            margin: 0;
+        }
+
+        td,
+        th {
+            border: var(--border-width) solid #000;
+            padding: 2px 5px;
+            vertical-align: middle;
+            font-weight: normal;
+        }
+
+        /* ユーティリティ */
+        .border-none {
+            border: none !important;
+        }
+
+        .border-top-none {
+            border-top: none !important;
+        }
+
+        .border-bottom-none {
+            border-bottom: none !important;
+        }
+
+        .border-right-none {
+            border-right: none !important;
+        }
+
+        .border-left-none {
+            border-left: none !important;
+        }
+
+        /* 点線の下線（ふりがな用）も変数の太さに合わせる */
+        .border-dashed-bottom {
+            border-bottom: var(--border-width) dashed #000 !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .align-top {
+            vertical-align: top;
+        }
+
+        .fs-small {
+            font-size: 9pt;
+        }
+
+        .fs-xsmall {
+            font-size: 8pt;
+        }
+
+        .fs-large {
+            font-size: 14pt;
+        }
+
+        .fs-title {
+            font-size: 22pt;
+            font-weight: bold;
+            letter-spacing: 0.5em;
+        }
+
+        /* =========================================
+           ヘッダーエリア
+           ========================================= */
+        .header-area {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 5px;
+            padding: 0 5px;
+        }
+
+        .date-text {
+            font-size: 10pt;
+            white-space: nowrap;
+        }
+
+        /* =========================================
+           プロファイルセクション
+           ========================================= */
+        .profile-wrapper {
+            width: 100%;
+            border: none;
+            margin-bottom: 0;
+        }
+
+        .profile-wrapper td {
+            padding: 0;
+        }
+
+        /* 左カラム（氏名・生年月日） */
+        .profile-left-col {
+            border: var(--border-width) solid #000 !important;
+            border-bottom: none !important;
+            vertical-align: top;
+        }
+
+        /* 氏名テーブル */
+        .name-area-table td {
+            border: none;
+            padding: 2px 5px;
+        }
+
+        .name-area-table .row-kana td {
+            border-bottom: var(--border-width) dashed #000;
+            /* 変数を使用 */
+            height: 25px;
+        }
+
+        .name-area-table .row-name td {
+            height: 90px;
+            vertical-align: top;
+            padding-top: 15px;
+        }
+
+        /* 写真エリア */
+        .photo-cell {
+            vertical-align: top;
+            padding: 5px !important;
+            border: none !important;
+        }
+
+        .photo-space {
+            width: 100%;
+            height: 130px;
+        }
+
+        /* 生年月日・性別行 */
+        .dob-row td {
+            height: 40px;
+            border-top: var(--border-width) solid #000;
+            padding: 2px 5px;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        /* =========================================
+           住所・連絡先ブロック
+           ========================================= */
+        .contact-table {
+            border: var(--border-width) solid #000;
+            margin-top: 0;
+            border-top: var(--border-width) solid #000;
+        }
+
+        .contact-table td {
+            border: var(--border-width) solid #000;
+        }
+
+        /* 列幅設定 */
+        .col-label {
+            width: 80px;
+            text-align: center;
+        }
+
+        .col-contact-narrow {
+            width: 140px;
+        }
+
+        .contact-label-text {
+            font-size: 10pt;
+            margin-bottom: 2px;
+        }
+
+        .contact-info-row {
+            height: 80px;
+        }
+
+        /* =========================================
+           学歴・職歴テーブル
+           ========================================= */
+        .history-table {
+            border: var(--border-width) solid #000;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .history-table th {
+            border-bottom: var(--border-width) solid #000;
+            text-align: center;
+            padding: 2px;
+            font-weight: normal;
+            height: var(--history-row-height);
+        }
+
+        .col-year {
+            width: 60px;
+            text-align: center;
+        }
+
+        .col-month {
+            width: 35px;
+            text-align: center;
+        }
+
+        .history-row {
+            height: var(--history-row-height);
+        }
+
+        /* その他 */
+        .page-footer-note {
+            font-size: 9pt;
+            text-align: right;
+            margin-top: 2px;
+        }
+
+        .page2-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .free-text-box {
+            height: 120px;
+            vertical-align: top;
+            padding: 10px;
+        }
+
+        .hope-text-box {
+            height: 154px;
+            vertical-align: top;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= PAGE 1 ================= -->
+    <div class="page">
+        <!-- ヘッダーエリア -->
+        <div class="header-area">
+            <div style="flex-grow: 1; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div class="fs-title" style="line-height: 1;">履歴書</div>
+                <div class="date-text">
+                    &nbsp;&nbsp;&nbsp;&nbsp;年 &nbsp;&nbsp;&nbsp;&nbsp;月 &nbsp;&nbsp;&nbsp;&nbsp;日 現在
+                </div>
+            </div>
+            <div style="width: var(--photo-width); flex-shrink: 0;"></div>
+        </div>
+
+        <!-- プロファイルセクション -->
+        <table class="profile-wrapper">
+            <colgroup>
+                <col>
+                <col style="width: var(--photo-width);">
+            </colgroup>
+
+            <tr>
+                <!-- 左セル -->
+                <td class="profile-left-col">
+                    <table class="name-area-table" style="width: 100%;">
+                        <colgroup>
+                            <col style="width: 70px;">
+                            <col>
+                        </colgroup>
+                        <!-- ふりがな -->
+                        <tr class="row-kana">
+                            <td class="text-center">ふりがな</td>
+                            <td></td>
+                        </tr>
+                        <!-- 氏名 -->
+                        <tr class="row-name">
+                            <td class="fs-large text-center">氏 &nbsp; 名</td>
+                            <td class="fs-large" style="padding-left: 20px;"></td>
+                        </tr>
+                    </table>
+
+                    <!-- 生年月日・性別行 -->
+                    <table style="width: 100%; border-top: 1px solid #000;">
+                        <tr class="dob-row">
+                            <td style="border: none; border-right: 1px solid #000;">
+                                &nbsp;&nbsp;&nbsp;&nbsp;年 &nbsp;&nbsp;&nbsp;&nbsp;月 &nbsp;&nbsp;&nbsp;&nbsp;日生
+                                （満 &nbsp;&nbsp;&nbsp;&nbsp;歳）
+                            </td>
+                            <td class="align-top" style="border: none; width: 80px;">
+                                <span class="fs-small">※性別</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                <!-- 右セル：写真 -->
+                <td class="photo-cell">
+                    <div class="photo-space"></div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- 住所・連絡先 -->
+        <table class="contact-table">
+            <colgroup>
+                <col class="col-label">
+                <col>
+                <col class="col-contact-narrow">
+            </colgroup>
+
+            <!-- 1行目：ふりがな / 電話 -->
+            <tr>
+                <!-- 縦線なし + 下線点線 -->
+                <td class="border-right-none border-dashed-bottom">ふりがな</td>
+                <td class="border-left-none border-dashed-bottom"></td>
+                <!-- 電話（下線点線に統一） -->
+                <td class="align-top border-dashed-bottom">
+                    <span class="contact-label-text">電話</span>
+                </td>
+            </tr>
+
+            <!-- 2行目：現住所 / Email -->
+            <tr class="contact-info-row">
+                <td class="align-top border-right-none">現住所</td>
+                <td class="align-top border-left-none">〒 &nbsp;&nbsp;&nbsp; - </td>
+                <td class="align-top">
+                    <span class="contact-label-text">E-mail</span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- 連絡先テーブル -->
+        <table class="contact-table"
+            style="border-top: 1px solid #000; margin-top: -1px; border-bottom: 1px solid #000;">
+            <colgroup>
+                <col class="col-label">
+                <col>
+                <col class="col-contact-narrow">
+            </colgroup>
+
+            <tr>
+                <!-- 縦線なし + 下線点線 -->
+                <td class="border-right-none border-dashed-bottom">ふりがな</td>
+                <td class="border-left-none border-dashed-bottom"></td>
+                <!-- 電話（下線点線に統一） -->
+                <td class="align-top border-dashed-bottom">
+                    <span class="contact-label-text">電話</span>
+                </td>
+            </tr>
+
+            <tr class="contact-info-row">
+                <td class="align-top border-right-none">連絡先</td>
+                <td class="align-top border-left-none">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <span>〒 &nbsp;&nbsp;&nbsp; - </span>
+                        <span style="font-size: 7pt; color: #555;">（現住所以外に連絡を希望する場合のみ記入）</span>
+                    </div>
+                </td>
+                <td class="align-top">
+                    <span class="contact-label-text">E-mail</span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- 学歴・職歴 1ページ目 -->
+        <table class="history-table">
+            <colgroup>
+                <col class="col-year">
+                <col class="col-month">
+                <col>
+            </colgroup>
+            <tr>
+                <th>年</th>
+                <th>月</th>
+                <th style="text-align: center;">学歴・職歴 （各別にまとめて書く）</th>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="history-row">
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+
+        <div class="page-footer-note">
+            ※「性別」欄：記載は任意です。未記載とすることも可能です。
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 ================= -->
+    <div class="page">
+        <div class="page2-content">
+            <div class="header-row" style="margin-bottom: 2mm; height: auto;">
+                <span class="fs-small" style="visibility: hidden;">履歴書</span>
+            </div>
+
+            <!-- 学歴・職歴 2ページ目 -->
+            <table class="history-table" style="flex-grow: 0; margin-bottom: 5px;">
+                <colgroup>
+                    <col class="col-year">
+                    <col class="col-month">
+                    <col>
+                </colgroup>
+                <tr>
+                    <th>年</th>
+                    <th>月</th>
+                    <th style="text-align: center;">学歴・職歴 （各別にまとめて書く）</th>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <!-- 免許・資格 -->
+            <table class="history-table" style="flex-grow: 0; margin-bottom: 20px;">
+                <colgroup>
+                    <col class="col-year">
+                    <col class="col-month">
+                    <col>
+                </colgroup>
+                <tr>
+                    <th>年</th>
+                    <th>月</th>
+                    <th style="text-align: center;">免許・資格</th>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="history-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <!-- 志望動機など -->
+            <table style="width: 100%; border: var(--border-width) solid #000; margin-bottom: 20px;">
+                <tr>
+                    <td class="align-top free-text-box" style="height: 188px;">
+                        志望の動機、特技、好きな学科、アピールポイントなど
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 本人希望 -->
+            <table style="width: 100%; border: var(--border-width) solid #000;">
+                <tr>
+                    <td class="align-top hope-text-box">
+                        本人希望記入欄（特に給料・職種・勤務時間・勤務地・その他についての希望などがあれば記入）
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>
