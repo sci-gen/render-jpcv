@@ -87,16 +87,16 @@
 )
 
 // --- スタイル定義 ---
-#let thick-stroke = 2.0pt + black
-#let thin-stroke = 1pt + black
-#let dotted-stroke = (thickness: 1pt, dash: "dotted", paint: black)
+#let thick-stroke = 1.5pt + black
+#let thin-stroke = 0.7pt + black
+#let dotted-stroke = (thickness: 0.7pt, dash: "dotted", paint: black)
 
-// 行の高さ定義
+// 行の高さ定義 (元のレイアウト値を維持)
 #let row-kana-height = 18pt
 #let row-name-height = 65pt
 #let row-dob-height = 32pt
 #let row-contact-height = 48pt
-#let row-history-height = 26pt // 学歴・職歴の枠を数pt詰める
+#let row-history-height = 26pt
 
 // セル内のテキスト配置用ヘルパー
 #let center-valign(body) = align(center + horizon, body)
@@ -126,12 +126,13 @@
 // ==========================================
 
 // ヘッダー
-#grid(
-  columns: (1fr, auto),
-  align: (bottom + left, bottom + right),
-  pad(bottom: 5pt, text(size: 22pt, weight: "bold", tracking: 0.5em)[履歴書]),
-  text(size: 9pt)[#(format-year(render_date.year, render_date.month))年 #render_date.month 月 #render_date.day 日 現在]
-)
+// 修正: 写真が上に突き抜けても文字と被らないよう、日付の右側に40mmの空白を確保
+#block(width: 100%, inset: (bottom: 5pt))[
+  #text(size: 22pt, weight: "bold", tracking: 0.5em)[履歴書]
+  #h(1fr)
+  #text(size: 9pt)[#(format-year(render_date.year, render_date.month))年 #render_date.month 月 #render_date.day 日 現在]
+  #h(40mm)
+]
 
 // 基本情報テーブル
 #table(
@@ -172,28 +173,30 @@
 
     (top: s-top, bottom: s-bottom, left: s-left, right: s-right)
   },
-  
+   
   // 1行目: ふりがな
-  center-valign(text(size: 8pt)[ふりがな]),
+  left-valign(text(size: 8pt)[ふりがな]),
   left-valign(text(size: 8pt)[ #h(1em) #profile.at("name_kana", default: "") ]),
-  
+   
   // 写真セル (rowspan: 2)
-  // HTMLでは写真枠自体のボーダーは無し
   table.cell(rowspan: 2, stroke: none)[
-    #align(center + horizon)[
-      #let face = profile.at("face_image_path", default: "")
-      #if face != "" {
+    #let face = profile.at("face_image_path", default: "")
+    #if face != "" {
+      // 枠線に被らないよう右と下に2ptのマージンを入れる
+      place(bottom + right, dx: -2pt, dy: -2pt,
         image(resolve-path(face), width: 30mm, height: 40mm, fit: "cover")
-      } else {
-        v(1fr)
-        text(size: 9pt, fill: gray)[写真を貼る位置\n(縦 36mm-40mm)\n(横 24mm-30mm)]
-        v(1fr)
-      }
-    ]
+      )
+    } else {
+      align(center + horizon)[
+        #text(size: 9pt, fill: gray)[写真を貼る位置\n(縦 36mm-40mm)\n(横 24mm-30mm)]
+      ]
+    }
   ],
 
   // 2行目: 氏名
-  center-valign(text(size: 14pt)[氏　名]),
+  align(left + top)[
+    #text(size: 14pt)[氏 名]
+  ],
   table.cell(inset: 15pt)[
     #v(10pt)
     #text(size: 18pt)[ #profile.at("name", default: "") ]
@@ -201,50 +204,72 @@
 
   // 3行目: 生年月日
   table.cell(colspan: 2)[
-    #let (y, m, d) = if "birthday" in profile {
-      let parts = str(profile.birthday).split("-")
-      (parts.at(0), parts.at(1), parts.at(2))
-    } else { ("   ", "   ", "   ") }
+      #let (y, m, d) = if "birthday" in profile {
+        let parts = str(profile.birthday).split("-")
+        // ▼ ここで 0 を取り除く処理を追加
+        let clean-m = if parts.at(1).starts-with("0") { parts.at(1).slice(1) } else { parts.at(1) }
+        let clean-d = if parts.at(2).starts-with("0") { parts.at(2).slice(1) } else { parts.at(2) }
+        (parts.at(0), clean-m, clean-d)
+      } else { ("   ", "   ", "   ") }
 
-    #align(left + horizon)[
-       #let y_label = format-year(y, m)
-       #h(2em) #(y_label)年 #h(2em) #m 月 #h(2em) #d 日生 
-       #if "age" in profile { [（満 #h(1em) #profile.age #h(1em) 歳）] }
-    ]
+      #align(left + horizon)[
+        #let y_label = format-year(y, m)
+        #h(2em) #(y_label)年 #h(2em) #m 月 #h(2em) #d 日生 
+        #if "age" in profile { [（満 #h(1em) #profile.age #h(1em) 歳）] }
+      ]
   ],
   side-field("※性別", profile.at("gender", default: ""), value-size: 10pt),
 
   // 4行目: 現住所ふりがな
-  center-valign(text(size: 8pt)[ふりがな]),
-  left-valign(text(size: 8pt)[ #h(1em) #profile.at("address_kana", default: "") ]),
+  left-valign(text(size: 8pt)[ふりがな]),
+  left-valign(text(size: 8pt)[ #profile.at("address_kana", default: "") ]),
   block(inset: (top: 3pt, bottom: 3pt, left: 3pt, right: 3pt))[
     #align(left + horizon)[
-      #text(size: 9pt)[電話]#h(0.3em)#text(size: 10pt)[#no-wrap-phone(profile.at("phone", default: ""))]
+      #text(size: 9pt)[電話]#h(0.3em)#text(size: 9pt)[#no-wrap-phone(profile.at("phone", default: ""))]
     ]
   ],
 
   // 5行目: 現住所
-  [
-    #align(center)[現住所　〒#profile.at("address_zip", default: "")]
-  ],
-  left-valign(text(size: 11pt)[#profile.at("address", default: "")]),
+  table.cell(
+    colspan: 2, // 元々2列だった分を結合して確保
+    inset: 5pt, // 余白調整（必要に応じて）
+    [
+      // --- 1行目: 郵便番号 ---
+      #align(left)[現住所　〒#profile.at("address_zip", default: "")]
+      
+      // --- 改行と少しの隙間 ---
+      #v(3pt) 
+      
+      // --- 2行目: 住所本体 ---
+      #text(size: 11pt)[#profile.at("address", default: "")]
+    ]
+  ),
   side-field("E-mail", profile.at("email", default: ""), value-size: 8pt),
 
   // 6行目: 連絡先ふりがな (省略時は「同上」など)
-  center-valign(text(size: 8pt)[ふりがな]),
+  left-valign(text(size: 8pt)[ふりがな]),
   left-valign(text(size: 8pt)[ #h(1em) #profile.at("contact_address_kana", default: "") ]),
   block(inset: (top: 3pt, bottom: 3pt, left: 3pt, right: 3pt))[
     #align(left + horizon)[
-      #text(size: 9pt)[電話]#h(0.3em)#text(size: 10pt)[#no-wrap-phone(profile.at("contact_phone", default: ""))]
+      #text(size: 9pt)[電話]#h(0.3em)#text(size: 9pt)[#no-wrap-phone(profile.at("contact_phone", default: ""))]
     ]
   ],
-
-  // 7行目: 連絡先
-  [
-    #align(center)[連絡先　〒#profile.at("contact_zip", default: "")]
-  ],
-  left-valign(text(size: 11pt)[#profile.at("contact_address", default: "")]),
-  side-field("E-mail", profile.at("contact_email", default: ""), value-size: 8pt)
+// 7行目: 連絡先
+  table.cell(
+    colspan: 2, // 2列分を結合
+    [
+       // --- 1行目: 郵便番号 ---
+       #align(left)[連絡先　〒#profile.at("contact_zip", default: "")]
+       
+       // --- 改行と隙間 ---
+       #v(3pt)
+       
+       // --- 2行目: 住所本体 ---
+       #text(size: 11pt)[#profile.at("contact_address", default: "")]
+    ]
+  ),
+  // 3列目: E-mail
+  side-field("E-mail", profile.at("contact_email", default: ""), value-size: 8pt),
 )
 
 #v(5pt)
@@ -290,7 +315,7 @@
     let count = calc.min(rows-count, remaining)
     history-items.slice(start-index, count: count)
   }
-  
+   
   // 足りない行数を空データで埋める
   while items.len() < rows-count {
     items.push((year: "", month: "", content: ""))
@@ -313,7 +338,7 @@
       (top: top, bottom: bottom, left: left, right: right)
     },
     rows: (row-history-height,) * (rows-count + 1),
-    
+     
     // ヘッダー
     align(center + horizon)[年],
     align(center + horizon)[月],
@@ -329,6 +354,7 @@
 }
 
 // 1ページ目の学歴・職歴行数
+// レイアウト維持のため、15行に戻します
 #let rows-p1 = 15
 #history-table(rows-p1, 0, "学歴・職歴 （各別にまとめて書く）")
 
@@ -376,7 +402,7 @@
     (top: top, bottom: bottom, left: left, right: right)
   },
   rows: (row-history-height,) * (qual-rows + 1),
-  
+   
   align(center + horizon)[年],
   align(center + horizon)[月],
   align(center + horizon)[免許・資格],

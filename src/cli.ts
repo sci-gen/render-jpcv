@@ -201,10 +201,11 @@ export async function main(argv = process.argv) {
     .action(async (yamlFile?: string) => {
       const rootDir = process.cwd();
 
-      // テンプレが無ければエラーにする（UX的に明示）
+      // テンプレが無ければ自動で `assets` からコピーする（init を明示的に実行しなくても動作する）
       const mainTyp = path.join(rootDir, '.render-jpcv', 'template.typ');
       if (!(await fs.pathExists(mainTyp))) {
-        throw new Error(`Template not found: ${mainTyp}. Run 'render-jpcv init' first.`);
+        console.log(`⚠️ .render-jpcv/template.typ が見つかりません。assets からテンプレートをコピーします...`);
+        await copyAssetsToHiddenDir(rootDir);
       }
 
       const inputYaml = await resolveInputYaml(rootDir, yamlFile);
