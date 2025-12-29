@@ -61,6 +61,41 @@ npx render-jpcv build
 
 - Node.js 18+
 
+## サンプル
+
+以下は `user-guide/sample-project/resume.yaml` と同様の入力例（アルバイト向けの抜粋）です。ファイル全体は `user-guide/sample-project/resume-parttime.yaml` を参照してください。
+
+```yaml
+config:
+	year_style: seireki
+	render_date: 2025-12-29
+
+profile:
+	name: 佐藤 花子
+	name_kana: サトウ ハナコ
+	birthday: 2004-07-15
+	age: 21
+	gender: 女
+	address: 東京都渋谷区1-2-3
+	phone: 080-9876-5432
+	email: hanako.sato@example.com
+
+education:
+	- date: 2020-04
+		event: 〇〇大学 短期大学部 入学
+
+work:
+	- date: 2023-08
+		event: コンビニエンスストア アルバイト（レジ・品出し）
+
+motivation: |
+	学業と両立しながら接客経験を積みたいと考え、御社の募集に応募しました。
+```
+
+下はこの CLI で生成した履歴書のサンプルイメージ（PDF をスクリーンショット化したものの例）です。
+
+![アルバイト向けサンプル履歴書](user-guide/sample-project/resume-parttime.svg)
+
 ## ライセンス
 
 MIT License
