@@ -1,0 +1,53 @@
+config:
+  year_style: seireki
+  render_date: 2025-12-29
+
+profile:
+  name: 佐藤 花子
+  name_kana: サトウ ハナコ
+  birthday: 2006-07-15
+  age: 19
+  gender: 女
+  face_image_path: ""
+  address_zip: 150-0041
+  address: 東京都渋谷区神南1-1-1
+  phone: 080-9876-5432
+  config:
+    year_style: seireki
+    render_date: 2025-12-29
+
+  profile:
+    name: 佐藤 花子
+    name_kana: サトウ ハナコ
+    birthday: 2006-07-15
+    age: 19
+    gender: 女
+    address_zip: 150-0041
+    address: 東京都渋谷区神南1-1-1
+    phone: 080-9876-5432
+    email: hanako.sato@example.com
+
+  education:
+    - date: 2022-04
+      event: 〇〇県立〇〇高等学校 入学
+    - date: 2025-03
+      event: 〇〇県立〇〇高等学校 卒業
+    - date: 2025-04
+      event: 〇〇大学 経営学部 入学（在学中）
+
+  work:
+    - date: 2023-08
+      event: コンビニエンスストア アルバイト 入社
+      description: レジ・品出し・接客
+
+  qualifications:
+    - date: 2023-11
+      name: 簿記検定3級 取得
+    - date: 2022-06
+      name: 実用英語技能検定（英検）準2級 取得
+    - date: 2024-10
+      name: 普通自動車第一種運転免許 取得
+
+  other:
+    motivation: |
+      学業と両立しながら接客経験を積みたいと考え、御社の募集に応募しました。

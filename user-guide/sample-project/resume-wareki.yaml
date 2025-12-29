@@ -1,14 +1,10 @@
 # ==========================================
-# RenderJPCV Resume Data (Sample)
+# RenderJPCV Resume Data (Sample: 和暦表示)
 # ==========================================
 
 config:
   font_size: 11pt
-  # 年の表示スタイル（YAMLは西暦で記述し、表示だけ切り替え）
-  # - seireki: 2025年
-  # - wareki: 令和7年 / 平成31年（境界は月単位で判定）
-  year_style: seireki
-  # 履歴書右上の「現在」日付・アーカイブファイル名に使用（YYYY-MM-DD）
+  year_style: wareki
   render_date: 2025-12-29
 
 profile:
@@ -41,42 +37,24 @@ education:
     event: 〇〇大学 理工学部 入学
   - date: 2013-03
     event: 〇〇大学 理工学部 卒業
-  - date: 2013-04
-    event: 〇〇大学大学院 〇〇研究科 入学
-  - date: 2015-03
-    event: 〇〇大学大学院 〇〇研究科 修了
 
 work:
   - date: 2013-04
     event: 株式会社〇〇 入社
-  - date: 2016-04
-    event: 株式会社〇〇 開発部 異動
-    description: Webアプリ基盤の整備
   - date: 2020-03
     event: 株式会社〇〇 退社
     description: 一身上の都合により
   - date: 2020-04
     event: 株式会社△△ 入社
     description: 現在に至る
-  - date: 2023-04
-    event: 株式会社△△ リードエンジニア
-    description: チームの開発生産性向上
 
 qualifications:
   - date: 2012-11
     name: 普通自動車第一種運転免許 取得
-  - date: 2018-05
-    name: TOEIC L&R 800点 取得
-  - date: 2021-12
-    name: 応用情報技術者試験 合格
-  - date: 2024-06
-    name: AWS Certified Solutions Architect – Associate 合格
 
 other:
   motivation: |
-    貴社の技術力と理念に深く共感し、PythonおよびTypeScriptの経験を活かして
-    プロダクト開発に貢献したいと考え、志望いたしました。
-    これまで、要件定義から設計・実装・運用まで一貫して携わり、品質と速度の両立を意識して改善を続けてきました。
+    和暦表示のサンプルです。
 
   hopes: |
-    リモートワークは週2〜3日程度を希望しますが、必要に応じて柔軟に対応いたします。
+    本人希望欄（サンプル）

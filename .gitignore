@@ -11,9 +11,6 @@ lib/
 # Local working directory artifacts (when you run the CLI in the repo root)
 .render-jpcv/
 archive/
-resume*.pdf
-resume-*.yml
-resume-*.yaml
 
 # Temp
 /tmp/
