@@ -17,3 +17,6 @@ resume-*.yaml
 
 # Temp
 /tmp/
+
+workspace/
+sorkspace/*
