@@ -1,11 +1,16 @@
 {
   "name": "render-jpcv",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "RenderJPCV - YAML to JIS-compliant resume generator (CLI)",
   "bin": {
     "render-jpcv": "./bin/cli.js"
   },
-  "files": ["bin", "lib", "assets", "README.md"],
+  "files": [
+    "bin",
+    "lib",
+    "assets",
+    "README.md"
+  ],
   "main": "lib/cli.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
