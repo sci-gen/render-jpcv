@@ -9,9 +9,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # PRのときは常に実行。Pushのときは、Botが作った"bump version"コミット以外なら実行。
+    if: >-
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: bump version'))
+
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # ここでPATを使うことで、後のgit pushが「ユーザーの操作」とみなされ、
+          # タグのpushイベントが publish.yml を叩けるようになる
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,3 +43,19 @@ jobs:
         with:
           name: lib
           path: lib
+
+      - name: Bump version and push tag
+        # PRではなく、mainブランチへのpushのときだけ実行
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 1. バージョン上げ
+          # メッセージはこの後 publish.yml で無視判定に使われるので統一しておく
+          npm version patch -m "chore: bump version to %s"
+
+          # 2. プッシュ
+          # ここでPATが使われているため、このタグPushが publish.yml を起動する
+          git push origin main
+          git push origin --tags
