@@ -1,82 +1,73 @@
-# ==========================================
-# RenderJPCV Resume Data (Sample)
-# ==========================================
-
 config:
   font_size: 11pt
-  # 年の表示スタイル（YAMLは西暦で記述し、表示だけ切り替え）
-  # - seireki: 2025年
-  # - wareki: 令和7年 / 平成31年（境界は月単位で判定）
+  # 学生の場合、西暦・和歴どちらでも良いですが、和歴の方が少し堅実な印象を与える場合があります
   year_style: seireki
-  # 履歴書右上の「現在」日付・アーカイブファイル名に使用（YYYY-MM-DD）
   render_date: 2025-12-29
 
 profile:
   name: 山田 太郎
   name_kana: ヤマダ タロウ
-  # 証明写真の相対パス（.render-jpcv から参照されるため ../samples/... を指定）
-  face_image_path: "../samples/syoumeisyashin_man.png"
-  birthday: 1990-01-01
-  age: 34
+  # 写真パスは環境に合わせて変更してください
+  face_image_path: "../syoumeisyashin_man.png"
+  birthday: 2004-05-15
+  age: 21
   gender: 男
 
-  address_zip: 100-0001
-  address: 東京都千代田区千代田1-1
-  address_kana: トウキョウト チヨダク チヨダ
+  address_zip: 160-0022
+  address: 東京都新宿区新宿1-2-3 ハイツ新宿 201号室
+  address_kana: トウキョウト シンジュクク シンジュク
   phone: 090-1234-5678
   email: taro.yamada@example.com
 
-  contact_zip: 150-0001
-  contact_address: 東京都渋谷区神宮前1-1-1
-  contact_address_kana: トウキョウト シブヤク ジングウマエ
-  contact_phone: 03-1234-5678
-  contact_email: taro.yamada+contact@example.com
+  # 帰省先などがない場合は連絡先欄は省略または同上でOK（ここでは省略）
+  # contact_zip: 
+  # contact_address: 
+  # contact_address_kana: 
+  # contact_phone: 
+  # contact_email: 
 
 education:
-  - date: 2006-04
+  - date: 2020-04
     event: 東京都立〇〇高等学校 入学
-  - date: 2009-03
+  - date: 2023-03
     event: 東京都立〇〇高等学校 卒業
-  - date: 2009-04
-    event: 〇〇大学 理工学部 入学
-  - date: 2013-03
-    event: 〇〇大学 理工学部 卒業
-  - date: 2013-04
-    event: 〇〇大学大学院 〇〇研究科 入学
-  - date: 2015-03
-    event: 〇〇大学大学院 〇〇研究科 修了
+  - date: 2023-04
+    event: 〇〇大学 経済学部 経済学科 入学
+  - date: 2027-03
+    event: 〇〇大学 経済学部 経済学科 卒業見込み
 
 work:
-  - date: 2013-04
-    event: 株式会社〇〇 入社
-  - date: 2016-04
-    event: 株式会社〇〇 開発部 異動
-    description: Webアプリ基盤の整備
-  - date: 2020-03
-    event: 株式会社〇〇 退社
-    description: 一身上の都合により
-  - date: 2020-04
-    event: 株式会社△△ 入社
-    description: 現在に至る
-  - date: 2023-04
-    event: 株式会社△△ リードエンジニア
-    description: チームの開発生産性向上
+  - date: 2023-05
+    event: コンビニエンスストア〇〇 新宿店 アルバイト入社
+    description: レジ打ち、品出し、清掃業務を担当
+  - date: 2024-03
+    event: コンビニエンスストア〇〇 新宿店 退社
+    description: 学業に専念するため
+  - date: 2024-04
+    event: カフェ・ド・〇〇 渋谷店 アルバイト入社
+    description: ホール・キッチン補助。
+  - date: 2024-12
+    event: カフェ・ド・〇〇 渋谷店 退社
+    description: 引越しに伴う通勤困難のため
 
 qualifications:
-  - date: 2012-11
-    name: 普通自動車第一種運転免許 取得
-  - date: 2018-05
-    name: TOEIC L&R 800点 取得
-  - date: 2021-12
-    name: 応用情報技術者試験 合格
-  - date: 2024-06
-    name: AWS Certified Solutions Architect – Associate 合格
+  - date: 2022-08
+    name: 普通自動車第一種運転免許（AT限定） 取得
+  - date: 2023-01
+    name: 実用英語技能検定 2級 合格
 
 other:
   motivation: |
-    貴社の技術力と理念に深く共感し、PythonおよびTypeScriptの経験を活かして
-    プロダクト開発に貢献したいと考え、志望いたしました。
-    これまで、要件定義から設計・実装・運用まで一貫して携わり、品質と速度の両立を意識して改善を続けてきました。
+    以前客として利用した際、スタッフの方々の明るい接客とお店の雰囲気に惹かれ、
+    私もその一員として働きたいと思い志望いたしました。
+    前職のカフェではホールとキッチン補助を経験しており、
+    ピークタイムの忙しい状況でも笑顔で丁寧な対応を心がけていました。
+    大学の授業が終わった夕方以降や土日を中心に、長く勤務したいと考えております。
 
   hopes: |
-    リモートワークは週2〜3日程度を希望しますが、必要に応じて柔軟に対応いたします。
+    【勤務可能日】
+    月・水・金：17:00 〜 23:00
+    土・日・祝：10:00 〜 23:00
+    ※大学の試験期間中（7月・1月）はシフト調整をご相談させていただけますと幸いです。
+    【通勤時間】
+    約 20 分（電車） 最寄駅：〇〇線 新宿駅
