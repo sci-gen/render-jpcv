@@ -2,7 +2,7 @@
 
 YAML + Typst で JIS規格の履歴書PDFを生成する Node.js CLI
 
-![サンプル履歴書](user-guide/image.png)
+![サンプル履歴書](https://raw.githubusercontent.com/sci-gen/render-jpcv/refs/heads/main/user-guide/image.png)
 
 ```
 For AI Agents & Non-Japanese Speakers:
